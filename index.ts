@@ -5,6 +5,9 @@ import bodyParser from "body-parser";
 import {passport} from "./src/utils/passport";
 import { healthcheckRoute } from "./src/routes/routes";
 import { authRoutes } from "./src/routes/user.routes";
+import { restaurantRouter } from "./src/routes/restaurant";
+import { errorHandler } from "./src/middleware/error";
+import { addressRouter } from "./src/routes/address";
 
 const app = express();
 require('./src/utils/passport');
@@ -27,6 +30,10 @@ app.use(express.urlencoded({ extended: true }));
 
 app.use("/api/v1", healthcheckRoute);
 app.use("/", authRoutes);
+app.use("/restaurant", restaurantRouter);
+app.use("/address", addressRouter);
+
+app.use(errorHandler);
 
 app.listen(port, () => {
   console.log(`Server listening on http://localhost:${port}`);

@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider = "prisma-client-js"
 }
@@ -11,23 +8,25 @@ datasource db {
 }
 
 model User {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
-  googleId String  @unique
+  id         String @id @default(auto()) @map("_id") @db.ObjectId
+  googleId   String @unique
   displayName String
+  carts      Cart[]
+  orders     Order[]
 }
 
 model Restaurant {
-  id String @id @default(auto()) @map("_id") @db.ObjectId
+  id          String     @id @default(auto()) @map("_id") @db.ObjectId
   name        String
   description String?
   address     Address[]
   phoneNumber String
-  menus        Menu[]
-
+  menus       Menu[]
+  orders        Order[]   
 }
 
-model Menu{
-  id            String    @id @default(auto()) @map("_id") @db.ObjectId
+model Menu {
+  id            String     @id @default(auto()) @map("_id") @db.ObjectId
   name          String
   description   String
   price         Float
@@ -36,14 +35,36 @@ model Menu{
   carbohydrates Int
   fat           Int
   restaurant    Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
-  restaurantId String @db.ObjectId
+  restaurantId String     @db.ObjectId 
+    carts         Cart[]     
 }
 
-model Address{
-  id          String @id @default(auto()) @map("_id") @db.ObjectId
-  city         String
-  state        String
-  postalCode   String
+model Address {
+  id            String     @id @default(auto()) @map("_id") @db.ObjectId
+  city          String
+  state         String
+  postalCode    String
   restaurant    Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
-  restaurantId String @db.ObjectId
+  restaurantId String     @db.ObjectId
+}
+
+model Cart {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  quantity  String
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String     @db.ObjectId
+  menu      Menu       @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  menuId    String     @db.ObjectId
+  cart      Order[]
+}
+
+model Order {
+  id        String     @id @default(auto()) @map("_id") @db.ObjectId
+  quantity  Int
+  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String     @db.ObjectId
+  restaurant    Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
+  restaurantId String     @db.ObjectId 
+  cart      Cart       @relation(fields: [cartId], references: [id], onDelete: Cascade)
+  cartId    String     @db.ObjectId
 }

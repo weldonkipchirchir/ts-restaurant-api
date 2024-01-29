@@ -15,4 +15,4 @@ const validate = (schema: AnyZodObject)=>(req: Request, res:Response, next: Next
     }
 }
 
-export default validate
+export  {validate}
