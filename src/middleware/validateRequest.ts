@@ -11,7 +11,7 @@ const validate = (schema: AnyZodObject)=>(req: Request, res:Response, next: Next
 
         next()
     }catch(err:any){
-        return res.status(400).send(err.console.errors);
+        return res.status(400).send(err.message);
     }
 }
 

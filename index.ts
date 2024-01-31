@@ -8,6 +8,9 @@ import { authRoutes } from "./src/routes/user.routes";
 import { restaurantRouter } from "./src/routes/restaurant";
 import { errorHandler } from "./src/middleware/error";
 import { addressRouter } from "./src/routes/address";
+import { menuRouter } from "./src/routes/menu";
+import { cartRouter } from "./src/routes/cart";
+import { orderRouter } from "./src/routes/order";
 
 const app = express();
 require('./src/utils/passport');
@@ -32,6 +35,10 @@ app.use("/api/v1", healthcheckRoute);
 app.use("/", authRoutes);
 app.use("/restaurant", restaurantRouter);
 app.use("/address", addressRouter);
+app.use("/menu", menuRouter);
+app.use("/cart", cartRouter);
+app.use("/cart", cartRouter);
+app.use("/order", orderRouter);
 
 app.use(errorHandler);
 

@@ -8,7 +8,7 @@ import { limiter } from "../middleware/rateLimit";
 // Get all restaurants
 restaurantRouter.get(
   "/",
-  [requireLogin, limiter],
+  // [requireLogin, limiter],
   async (req: Request, res: Response, next: NextFunction) => {
     try {
       const restaurants = await prisma.restaurant.findMany({
@@ -89,7 +89,7 @@ restaurantRouter.get(
 // Get menus from a specific restaurant
 restaurantRouter.get(
   "/menu/:id", 
-  [limiter, requireLogin],
+  // [limiter, requireLogin],
   async (req: Request, res: Response, next: NextFunction) => {
     const { id } = req.params;
     try {

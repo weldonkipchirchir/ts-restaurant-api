@@ -49,22 +49,23 @@ model Address {
 }
 
 model Cart {
-  id        String     @id @default(auto()) @map("_id") @db.ObjectId
-  quantity  String
-  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String     @db.ObjectId
-  menu      Menu       @relation(fields: [menuId], references: [id], onDelete: Cascade)
-  menuId    String     @db.ObjectId
-  cart      Order[]
+   id        String    @id @default(auto()) @map("_id") @db.ObjectId
+  quantity  Int
+  user      User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId    String    @db.ObjectId
+  menu      Menu      @relation(fields: [menuId], references: [id], onDelete: Cascade)
+  menuId    String    @db.ObjectId
+  createdAt DateTime  @default(now())
+  order     Order?    @relation(fields: [orderId], references: [id])
+  orderId   String?   @db.ObjectId
 }
 
 model Order {
-  id        String     @id @default(auto()) @map("_id") @db.ObjectId
-  quantity  Int
-  user      User       @relation(fields: [userId], references: [id], onDelete: Cascade)
-  userId    String     @db.ObjectId
+id            String     @id @default(auto()) @map("_id") @db.ObjectId
+  user          User       @relation(fields: [userId], references: [id], onDelete: Cascade)
+  userId        String     @db.ObjectId
   restaurant    Restaurant @relation(fields: [restaurantId], references: [id], onDelete: Cascade)
   restaurantId String     @db.ObjectId 
-  cart      Cart       @relation(fields: [cartId], references: [id], onDelete: Cascade)
-  cartId    String     @db.ObjectId
+  items         Cart[]     // Reference to Cart items associated with the order
+  createdAt     DateTime   @default(now())
 }
